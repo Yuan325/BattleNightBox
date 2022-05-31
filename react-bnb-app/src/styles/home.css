@@ -1,0 +1,31 @@
+.home-input {
+    margin: 10px 3px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 12px 20px;
+    font-size: 20px;
+    width: 70px;
+    height: 30px;
+    text-align: center;
+}
+
+.home-btn {
+    margin: 10px;
+    background-color: #5173BD; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 0px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    border-radius: 10px;
+    text-align: center;
+    width: 200px;
+    font-size: 16px;
+    cursor: pointer;    
+}
+
+.home-btn:hover {
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+}

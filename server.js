@@ -1,9 +1,12 @@
 // npm run dev
+//node.js
+
 const http = require("http");
 const express = require("express");
 const socketio = require('socket.io');
 const { addUser, removeUser } = require("./user");
 const { addOrEditRoom, getRoom, removeRoom } = require("./room");
+const { addPlayerStatus, updatePlayerStatus, allPlayerStatus } = require("./RSP");
 
 const app = express();
 const server = http.createServer(app);
@@ -27,6 +30,8 @@ io.on("connection", (socket) => {
     socket.on("join", ({ name, room, device, game }, callBack) => {
         const { user, userError } = addUser({ id: socket.id, name, room, device });
         if (userError) return callBack(userError);
+
+
         
         console.log(`A connection has been made`);
 
@@ -56,6 +61,31 @@ io.on("connection", (socket) => {
                 text: message,
             });
         });
+
+        //test for RockPaperScissors
+
+        if (user.device === "controller"){
+            socket.broadcast
+                .to(user.room)
+                .emit("player", { user: "Player", text: `${user.name} has joined the battle!`});
+            callBack(null);
+            //addPlayerStatus({id: user.id, status: false});
+            console.log(`testing`);
+        }
+
+        socket.on("sendChoice", ({choice}) => {
+            io.to(user.room).emit("choice", {
+                user2: user.name,
+                text2: choice,
+            });
+        });
+
+        socket.on("sendStatus", ({ready}) => {
+            updatePlayerStatus({id:user.id, status: ready});
+            const statusmessage = allPlayerStatus();
+            socket.emit("displayStatus", {statusmessage});
+        });
+        //test end
 
         // THIS INFORMATION ONLY SHOWN AT VIEW
         if (user.device === "controller"){

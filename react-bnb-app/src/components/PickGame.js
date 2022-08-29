@@ -10,7 +10,7 @@ const Device = () => {
     const [searchParams] = useSearchParams();
     const [name, setName] = useState("");
     const [room, setRoom] = useState("");
-    const games = ["chat", "sudoku"];
+    const games = ["chat", "sudoku","RockPaperScissors"];
     
 
     useEffect(() => {

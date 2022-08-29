@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import socket from "../Socket";
 import SudokuC from "./sudoku/SudokuC";
 import TemplateC from "./archive/TemplateC";
+import RPS_C from "./RockPaperScissors/RPS_C";
 
 const ControllerDevice = () => {
     const [searchParams] = useSearchParams();
@@ -48,6 +49,11 @@ const ControllerDevice = () => {
                 if (game === "chat"){
                     return (
                         <TemplateC />
+                    )
+                }
+                if (game === "RockPaperScissors"){
+                    return (
+                        <RPS_C />
                     )
                 }
             })()}

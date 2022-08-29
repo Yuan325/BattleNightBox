@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import socket from "../Socket";
 import SudokuV from "./sudoku/SudokuV";
 import TemplateV from "./archive/TemplateV";
+import RPS_V from "./RockPaperScissors/RPS_V";
 
 const ViewDevice = () => {
     const [searchParams] = useSearchParams();
@@ -43,6 +44,11 @@ const ViewDevice = () => {
                 if (game === "chat") {
                     return (
                         <TemplateV />
+                    )
+                }
+                if (game === "RockPaperScissors"){
+                    return (
+                        <RPS_V />
                     )
                 }
             })()}

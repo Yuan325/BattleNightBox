@@ -1,12 +1,12 @@
 // npm run dev
-//node.js
+// node.js
 
 const http = require("http");
 const express = require("express");
 const socketio = require('socket.io');
 const { addUser, removeUser } = require("./user");
 const { addOrEditRoom, getRoom, removeRoom } = require("./room");
-const { addPlayerStatus, updatePlayerStatus, allPlayerStatus } = require("./RSP");
+const { addPlayerStatus, updatePlayerStatus, allPlayerStatus, getScore, updatePlayerChoice, updatePlayerScore } = require("./RSP");
 
 const app = express();
 const server = http.createServer(app);
@@ -67,10 +67,15 @@ io.on("connection", (socket) => {
         if (user.device === "controller"){
             socket.broadcast
                 .to(user.room)
-                .emit("player", { user: "Player", text: `${user.name} has joined the battle!`});
+                .emit("player", { user: "", text: `${user.name} has joined the RSP battle!`});
             callBack(null);
-            //addPlayerStatus({id: user.id, status: false});
-            console.log(`testing`);
+            addPlayerStatus({id: user.id, status: false});
+            const playerscore = getScore({id: user.id});
+            console.log(`new player score: ` + playerscore);
+            io.to(user.room).emit("score", {user3: user.name , score3: playerscore});
+            const statusmessage = allPlayerStatus();
+            console.log(`initial ready check`);
+            io.to(user.room).emit("displayStatus", {message: statusmessage});
         }
 
         socket.on("sendChoice", ({choice}) => {
@@ -78,12 +83,22 @@ io.on("connection", (socket) => {
                 user2: user.name,
                 text2: choice,
             });
+            updatePlayerChoice({id: user.id, choice: choice});
         });
+
 
         socket.on("sendStatus", ({ready}) => {
             updatePlayerStatus({id:user.id, status: ready});
             const statusmessage = allPlayerStatus();
-            socket.emit("displayStatus", {statusmessage});
+            console.log(statusmessage + "  received status: " + ready);
+            io.to(user.room).emit("displayStatus", {message: statusmessage});
+            const allready = updatePlayerScore();
+            console.log(`all ready: ` + allready)
+            if(allready){
+            const statusmessage = allPlayerStatus();
+            console.log(`after score check`);
+            io.to(user.room).emit("displayStatus", {message: statusmessage});
+            }
         });
         //test end
 

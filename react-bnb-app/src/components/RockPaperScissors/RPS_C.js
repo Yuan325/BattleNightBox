@@ -1,25 +1,23 @@
 import React, { useState } from "react";
 import socket from "../../Socket";
 
-const RPS_C = () => {
-    const [choice, setChoice] = useState("");
-    let ready = false;
+//todo
+//make ready button only able to click once
+//merge ready and choice button
+//wait for all player
+//result page
 
-    const submitChoice = (e) => {
-        socket.emit("sendChoice", { choice });
-    };
+const RPS_C = () => {
+    var ready = false;
 
     const submitScissors = (e) => {
-            setChoice("scissors");
-            submitChoice(); //sendChoice emit
+            socket.emit("sendChoice", { choice: "S" });
         };
     const submitPaper = (e) => {
-            setChoice("paper");
-            submitChoice();
+            socket.emit("sendChoice", { choice: "P"});
     };
     const submitRock = (e) => {
-            setChoice("rock");
-            submitChoice();    
+            socket.emit("sendChoice", { choice: "R" });
     };
 
     const playerReady = (e) =>{

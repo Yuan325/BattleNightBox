@@ -9,32 +9,35 @@ import socket from "../../Socket";
 
 const RPS_V = () => {
     const [players, setPlayers] = useState([]);
-    const [allPlayerStatus, setAllPlayerStatus] = useState("");
+    const [allPlayerStatus, setAllPlayerStatus] = useState("Waiting for players to join");
     const [choices, setChoices] = useState([]);
+    const [scores, setScores] = useState([]);
 
     useEffect(() => {
-        socket.on("player", ({player}) => {
+        socket.on("player", (player) => {
             setPlayers((players) => [...players, player]);
+            console.log(`player check`)
         });
 
-    }, []);
-
-    useEffect(() => {
-        socket.on("choice", ({choice}) => {
+        
+        socket.on("choice", (choice) => {
             setChoices((choices) => [...choices, choice]);
+            console.log(`choice checking`);
+        });
+
+        
+        socket.on("displayStatus", ({message}) =>{
+            setAllPlayerStatus(message);
+            console.log(message);
+        });
+
+        socket.on("score", (score) => {
+            setScores((scores) => [...scores, score]);
+            console.log(`score socket run`);
         });
 
     }, []);
 
-
-    //all player status still not render yet
-    useEffect(() => {
-        socket.on("displayStatus", ({statusmessage}) =>{
-            setAllPlayerStatus(statusmessage);
-        });
-    }, []);
-
-    console.log(players);
 
     return (
         <div>
@@ -42,8 +45,23 @@ const RPS_V = () => {
                 return(
                     <div key={i}>
                         {val.text}
-                        <b>{val.user}</b>
                         <br />
+                    </div>
+                );
+            })}
+            <div> {allPlayerStatus} </div>
+            {scores.map((val,i)=> {
+                return (
+                    <div key={i}>
+                        {val.user3} score: {val.score3}
+                        <br />
+                    </div>
+                );
+            })}
+            {choices.map((val,i)=> {
+                return (
+                    <div key={i}>
+                        {val.user2} choose {val.text2}
                         <br />
                     </div>
                 );

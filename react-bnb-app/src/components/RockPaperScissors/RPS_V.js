@@ -19,7 +19,7 @@ const RPS_V = () => {
             console.log(`player check`)
         });
 
-        
+        // test
         socket.on("choice", (choice) => {
             setChoices((choices) => [...choices, choice]);
             console.log(`choice checking`);

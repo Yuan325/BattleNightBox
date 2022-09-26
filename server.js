@@ -98,6 +98,8 @@ io.on("connection", (socket) => {
             const statusmessage = allPlayerStatus();
             console.log(`after score check`);
             io.to(user.room).emit("displayStatus", {message: statusmessage});
+            //here need to reload the score 
+            io.to(user.room).emit("score", {user3: user.name , score3: playerscore});
             }
         });
         //test end

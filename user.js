@@ -14,3 +14,4 @@ exports.removeUser = (id) => {
     users.pop(user);
     return user;
 }
+
